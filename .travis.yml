@@ -1,7 +1,7 @@
 env:
   global:
     - CONAN_USERNAME: "sechinm"
-    - CONAN_REFERENCE: "conan-aws-sdk-cpp/1.8"
+    - CONAN_REFERENCE: "aws-sdk-cpp/1.8"
     - CONAN_REMOTE: "sechinm"
     - CONAN_CHANNEL: "testing"
 
@@ -39,7 +39,10 @@ matrix:
       env: CONAN_APPLE_CLANG_VERSIONS=9.1
 
 install:
-    - ./.travis/install.sh
+    - python -m pip install --upgrade pip
+    - pip install conan --upgrade
+    - pip install conan_package_tools
+    - conan user
 
 script:
-    - ./.travis/run.sh
+    python build.py
