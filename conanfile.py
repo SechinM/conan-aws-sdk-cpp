@@ -10,6 +10,7 @@ class AwsSdkConan(ConanFile):
     options = {"shared": [True, False], "build_s3": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
+    requires = "zlib/1.2.11"
 
     def source(self):
         self.run("git clone https://github.com/aws/aws-sdk-cpp.git")
