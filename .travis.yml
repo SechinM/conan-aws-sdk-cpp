@@ -39,9 +39,7 @@ matrix:
       env: CONAN_APPLE_CLANG_VERSIONS=9.1
 
 install:
-  - pip install conan --upgrade
-  - pip install conan_package_tools
-  - conan user
+    - ./.travis/install.sh
 
 script:
-  python build.py
+    - ./.travis/run.sh
