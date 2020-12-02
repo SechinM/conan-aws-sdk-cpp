@@ -1,7 +1,7 @@
 env:
   global:
     - CONAN_USERNAME: "sechinm"
-    - CONAN_REFERENCE: "aws-sdk-cpp/1.8"
+    - CONAN_REFERENCE: "aws-sdk-cpp/1.8.82"
     - CONAN_REMOTE: "sechinm"
     - CONAN_CHANNEL: "testing"
 
