@@ -3,26 +3,21 @@ from conans import ConanFile, CMake, tools
 
 class AwsSdkConan(ConanFile):
     name = "aws-sdk-cpp"
-    version = "1.8"
+    version = "1.8.82"
     url = "https://github.com/SechinM/conan-aws-sdk-cpp"
     description = "Conan package for aws-sdk-cpp"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "build_s3": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    requires = "zlib/1.2.11"
+    build_requires = "zlib/1.2.11", "libcurl/7.71.1"
 
-    def requirements(self):
-        if self.settings.os != "Macos":
-           self.requires("openssl/1.1.1h")
-        self.requires("libcurl/7.66.0@bincrafters/stable")
+    def configure(self):
+        self.options.build_s3 = True
 
     def source(self):
         self.run("curl -sSL https://github.com/aws/aws-sdk-cpp/archive/" + self.version + ".tar.gz > aws-sdk-cpp.tar.gz")
         self.run("tar xf aws-sdk-cpp.tar.gz")
-
-    def configure(self):
-        self.options.build_s3 = True
 
     def build(self):
         cmake = CMake(self)
@@ -30,7 +25,7 @@ class AwsSdkConan(ConanFile):
         cmake.definitions["ENABLE_TESTING"] = "OFF"
         cmake.definitions["AUTORUN_UNIT_TESTS"] = "OFF"
         cmake.definitions["BUILD_SHARED_LIBS"] = "OFF"
-        cmake.configure(source_folder="aws-sdk-cpp")
+        cmake.configure(source_folder=self.name + "-" + self.version)
         self.run("make -j4")
         cmake.install()
 
