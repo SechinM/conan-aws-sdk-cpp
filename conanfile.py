@@ -12,8 +12,14 @@ class AwsSdkConan(ConanFile):
     generators = "cmake"
     requires = "zlib/1.2.11"
 
+    def requirements(self):
+        if self.settings.os != "Macos":
+           self.requires("openssl/1.1.1h")
+        self.requires("libcurl/7.66.0@bincrafters/stable")
+
     def source(self):
-        self.run("git clone https://github.com/aws/aws-sdk-cpp.git")
+        self.run("curl -sSL https://github.com/aws/aws-sdk-cpp/archive/" + self.version + ".tar.gz > aws-sdk-cpp.tar.gz")
+        self.run("tar xf aws-sdk-cpp.tar.gz")
 
     def configure(self):
         self.options.build_s3 = True
