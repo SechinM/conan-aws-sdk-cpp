@@ -12,9 +12,6 @@ class AwsSdkConan(ConanFile):
     generators = "cmake"
     build_requires = "zlib/1.2.11"
 
-    def configure(self):
-        self.options.build_s3 = True
-
     def build_requirements(self):
         if self.settings.os != "Macos":
             self.requires("openssl/1.1.1h")
@@ -24,6 +21,9 @@ class AwsSdkConan(ConanFile):
         self.run("curl -sSL https://github.com/aws/aws-sdk-cpp/archive/" + self.version + ".tar.gz > aws-sdk-cpp.tar.gz")
         self.run("tar xf aws-sdk-cpp.tar.gz")
 
+    def configure(self):
+        self.options.build_s3 = True
+
     def build(self):
         cmake = CMake(self)
         cmake.definitions["ENABLE_UNITY_BUILD"] = "ON"
@@ -31,7 +31,7 @@ class AwsSdkConan(ConanFile):
         cmake.definitions["AUTORUN_UNIT_TESTS"] = "OFF"
         cmake.definitions["BUILD_SHARED_LIBS"] = "OFF"
         cmake.configure(source_folder=self.name + "-" + self.version)
-        self.run("make -j4")
+        cmake.build()
         cmake.install()
 
     def package(self):
