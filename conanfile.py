@@ -4,9 +4,11 @@ from conans import ConanFile, CMake, tools
 class AwsSdkConan(ConanFile):
     name = "aws-sdk-cpp"
     version = "1.8.82"
+    license = "Apache 2.0"
     url = "https://github.com/SechinM/conan-aws-sdk-cpp"
     description = "Conan package for aws-sdk-cpp"
     settings = "os", "compiler", "build_type", "arch"
+    build_policy = "missing"
     options = {"shared": [True, False], "build_s3": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
