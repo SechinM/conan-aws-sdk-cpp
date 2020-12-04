@@ -50,6 +50,7 @@ class AwsSdkConan(ConanFile):
         cmake.definitions["BUILD_SHARED_LIBS"] = "OFF"
         cmake.configure(source_folder=self.name + "-" + self.version)
         cmake.build()
+        cmake.install()
 
     def package(self):
         self.copy("*.h", dst="include", src="aws-sdk-cpp")
