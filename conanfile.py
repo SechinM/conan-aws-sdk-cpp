@@ -9,7 +9,11 @@ class AwsSdkConan(ConanFile):
     description = "Conan package for aws-sdk-cpp"
     settings = "os", "compiler", "build_type", "arch"
     build_policy = "missing"
-    options = {"shared": [True, False], "build_s3": [True, False]}
+    options = {"shared": [True, False], "build_s3": [True, False], "build_apigateway": [True, False],
+               "build_cognito_identity": [True, False], "build_cognito_idp": [True, False],
+               "build_cognito_sync": [True, False],  "build_email": [True, False], "build_events": [True, False],
+               "build_iam": [True, False], "build_identity_management": [True, False], "build_lambda": [True, False],
+               "build_logs": [True, False], "build_rds": [True, False], "build_secretsmanager": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
     build_requires = "zlib/1.2.11"
@@ -24,7 +28,19 @@ class AwsSdkConan(ConanFile):
         self.run("tar xf aws-sdk-cpp.tar.gz")
 
     def configure(self):
+        self.options.build_apigateway = True
+        self.options.build_cognito_identity = True
+        self.options.build_cognito_idp = True
+        self.options.build_cognito_sync = True
+        self.options.build_email = True
+        self.options.build_events = True
+        self.options.build_iam = True
+        self.options.build_identity_management = True
+        self.options.build_lambda = True
+        self.options.build_logs = True
+        self.options.build_rds = True
         self.options.build_s3 = True
+        self.options.build_secretsmanager = True
 
     def build(self):
         cmake = CMake(self)
@@ -34,7 +50,6 @@ class AwsSdkConan(ConanFile):
         cmake.definitions["BUILD_SHARED_LIBS"] = "OFF"
         cmake.configure(source_folder=self.name + "-" + self.version)
         cmake.build()
-        cmake.install()
 
     def package(self):
         self.copy("*.h", dst="include", src="aws-sdk-cpp")
